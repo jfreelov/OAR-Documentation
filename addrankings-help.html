@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AddRankingsToTable — Help</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --bg-subtle: #faf8f2;
+    --bg-code: #eeece4;
+    --text: #262624;
+    --text-muted: #73726c;
+    --border: rgba(0,0,0,0.12);
+
+    --hdr-bg: #B5D4F4;
+    --hdr-text: #0C447C;
+    --dir-bg: #FAEEDA;
+    --dir-text: #633806;
+    --c1-hdr-bg: #9FE1CB;
+    --c1-hdr-text: #04342C;
+    --c1-bg: #E1F5EE;
+    --c1-text: #085041;
+    --c2-hdr-bg: #CECBF6;
+    --c2-hdr-text: #26215C;
+    --c2-bg: #EEEDFE;
+    --c2-text: #3C3489;
+    --boundary: #7F77DD;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1f1e1c;
+      --bg-subtle: #2a2927;
+      --bg-code: #3a3935;
+      --text: #e8e6dd;
+      --text-muted: #a3a196;
+      --border: rgba(255,255,255,0.14);
+
+      --hdr-bg: #042C53;
+      --hdr-text: #B5D4F4;
+      --dir-bg: #4A2810;
+      --dir-text: #FAEEDA;
+      --c1-hdr-bg: #04342C;
+      --c1-hdr-text: #9FE1CB;
+      --c1-bg: #085041;
+      --c1-text: #9FE1CB;
+      --c2-hdr-bg: #26215C;
+      --c2-hdr-text: #CECBF6;
+      --c2-bg: #3C3489;
+      --c2-text: #CECBF6;
+      --boundary: #AFA9EC;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body {
+    padding: 16px 14px 32px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  h1 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+
+  h2 {
+    font-size: 11px;
+    font-weight: 600;
+    margin: 22px 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  p { margin: 0 0 10px; }
+
+  .lead {
+    color: var(--text-muted);
+    font-size: 12.5px;
+    margin-bottom: 8px;
+  }
+
+  ol { margin: 0; padding-left: 20px; }
+  ol > li { margin-bottom: 10px; }
+
+  ul.clean { margin: 0; padding-left: 18px; font-size: 12.5px; }
+  ul.clean li { margin-bottom: 4px; }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    background: var(--bg-code);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .spec {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 3px 10px;
+    margin: 6px 0 2px;
+    font-size: 12px;
+  }
+  .spec dt {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--dir-text);
+  }
+  .spec dd { margin: 0; color: var(--text-muted); }
+
+  .caption {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin: 0 0 6px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 6px 0 14px;
+    border-radius: 4px;
+    border: 0.5px solid var(--border);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: max-content;
+    font-size: 11px;
+    font-family: inherit;
+  }
+
+  table td {
+    border: 0.5px solid var(--border);
+    padding: 4px 7px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .hdr { background: var(--hdr-bg); color: var(--hdr-text); font-weight: 600; }
+  .dir { background: var(--dir-bg); color: var(--dir-text); font-weight: 600; text-align: center; }
+  tr.dir-row td { background: var(--dir-bg); }
+
+  .c1h { background: var(--c1-hdr-bg); color: var(--c1-hdr-text); font-weight: 600; text-align: center; }
+  .c2h { background: var(--c2-hdr-bg); color: var(--c2-hdr-text); font-weight: 600; text-align: center; }
+  .c1  { background: var(--c1-bg);     color: var(--c1-text);     font-weight: 600; text-align: center; }
+  .c2  { background: var(--c2-bg);     color: var(--c2-text);     font-weight: 600; text-align: center; }
+
+  .gap {
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    text-align: center !important;
+    font-size: 10px;
+    font-style: italic;
+    padding: 3px 6px !important;
+  }
+
+  .boundary td { border-top: 1.5px dashed var(--boundary); }
+
+  .errors { margin: 0; padding: 0; list-style: none; font-size: 12px; }
+  .errors li {
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    background: var(--bg-subtle);
+    border-radius: 4px;
+  }
+  .errors .msg {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    color: var(--text);
+  }
+  .errors .fix { color: var(--text-muted); }
+
+  footer {
+    margin-top: 28px;
+    padding-top: 12px;
+    border-top: 0.5px solid var(--border);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<h1>AddRankingsToTable</h1>
+<p class="lead">Sorts an Excel table using priority rules written above the header, then appends <code>OverallRank</code> (and optionally <code>CategoryRank</code>) columns.</p>
+
+<h2>Setup</h2>
+<ol>
+  <li>
+    <strong>Write directives</strong> in the row <em>directly above</em> the table header. One signed integer per column you want to sort by, blank otherwise.
+    <dl class="spec">
+      <dt>|n|</dt><dd>priority: 1 = primary, 2 = tiebreak, 3 = next…</dd>
+      <dt>sign</dt><dd>+ ascending, − descending</dd>
+    </dl>
+  </li>
+  <li>
+    <strong>(Optional) click a header cell</strong> to group <code>CategoryRank</code> by that column. Clicking anywhere else inside the table → only <code>OverallRank</code>.
+  </li>
+  <li>
+    <strong>Run</strong> the macro. Rank column(s) appear at the right edge.
+  </li>
+</ol>
+
+<h2>Example — setup</h2>
+<p class="caption">Directives: Battle asc (1st), Points desc (2nd), Min asc (3rd), Name asc (4th). Active cell on the <strong>Battle</strong> header → CategoryRank groups by Battle.</p>
+
+<div class="table-wrap">
+<table>
+  <tr class="dir-row">
+    <td class="dir">1</td>
+    <td class="dir">4</td>
+    <td></td>
+    <td class="dir">−2</td>
+    <td class="dir">3</td>
+  </tr>
+  <tr>
+    <td class="hdr">Battle</td>
+    <td class="hdr">Name</td>
+    <td class="hdr">Country</td>
+    <td class="hdr">Points</td>
+    <td class="hdr">Min</td>
+  </tr>
+  <tr><td>B2</td><td>Adam Carter</td><td>Canada</td><td>1125</td><td>25.03</td></tr>
+  <tr><td>B3</td><td>Adam Carter</td><td>Canada</td><td>1128</td><td>27.42</td></tr>
+  <tr><td>B7</td><td>Adam Carter</td><td>Canada</td><td>1250</td><td>23.35</td></tr>
+  <tr><td>B2</td><td>Adam Reichen.</td><td>Hungary</td><td>1060</td><td>29.98</td></tr>
+  <tr><td>B1</td><td>A. R. Lindén</td><td>Denmark</td><td>840</td><td>30.00</td></tr>
+  <tr><td>B4</td><td>A. R. Lindén</td><td>Denmark</td><td>1110</td><td>30.00</td></tr>
+  <tr><td colspan="5" class="gap">… 264 more rows …</td></tr>
+</table>
+</div>
+
+<h2>Example — result</h2>
+<p class="caption">OverallRank numbers all 270 rows. CategoryRank restarts at each new Battle (dashed line = Battle 1 → 2 boundary).</p>
+
+<div class="table-wrap">
+<table>
+  <tr>
+    <td class="hdr">Battle</td>
+    <td class="hdr">Name</td>
+    <td class="hdr">Country</td>
+    <td class="hdr">Pts</td>
+    <td class="hdr">Min</td>
+    <td class="c1h">OvrRank</td>
+    <td class="c2h">CatRank</td>
+  </tr>
+  <tr><td>B1</td><td>Diarmuid Early</td><td>Ireland</td><td>1150</td><td>30.00</td><td class="c1">1</td><td class="c2">1</td></tr>
+  <tr><td>B1</td><td>Chris Clarke</td><td>UK</td><td>990</td><td>29.20</td><td class="c1">2</td><td class="c2">2</td></tr>
+  <tr><td>B1</td><td>W. Gerritsen</td><td>Nether.</td><td>980</td><td>29.18</td><td class="c1">3</td><td class="c2">3</td></tr>
+  <tr><td>B1</td><td>Jacob Andrews</td><td>USA</td><td>950</td><td>28.63</td><td class="c1">4</td><td class="c2">4</td></tr>
+  <tr><td>B1</td><td>Michael Jarman</td><td>Canada</td><td>940</td><td>28.67</td><td class="c1">5</td><td class="c2">5</td></tr>
+  <tr><td>B1</td><td>Julien Lacaze</td><td>Réunion</td><td>940</td><td>29.85</td><td class="c1">6</td><td class="c2">6</td></tr>
+  <tr><td colspan="7" class="gap">… 23 more Battle 1 rows …</td></tr>
+  <tr><td>B1</td><td>Matt Stockton</td><td>USA</td><td>725</td><td>30.00</td><td class="c1">30</td><td class="c2">30</td></tr>
+  <tr class="boundary"><td>B2</td><td>Diarmuid Early</td><td>Ireland</td><td>1250</td><td>16.40</td><td class="c1">31</td><td class="c2">1</td></tr>
+  <tr><td>B2</td><td>Colin Sheehe</td><td>USA</td><td>1250</td><td>24.38</td><td class="c1">32</td><td class="c2">2</td></tr>
+  <tr><td>B2</td><td>Anup Agarwal</td><td>India</td><td>1250</td><td>25.20</td><td class="c1">33</td><td class="c2">3</td></tr>
+  <tr><td colspan="7" class="gap">… through Battle 9 …</td></tr>
+</table>
+</div>
+
+<h2>Good to know</h2>
+<ul class="clean">
+  <li>At least one numeric directive is required.</li>
+  <li>Ties fall through to the next priority, then the next…</li>
+  <li>Active cell must be inside the table when you run the macro.</li>
+  <li>CategoryRank is added only when the active cell is on a header cell.</li>
+  <li>New columns are named <code>OverallRank</code> and <code>CategoryRank</code>.</li>
+</ul>
+
+<h2>If it errors</h2>
+<ul class="errors">
+  <li>
+    <span class="msg">Active cell is not inside a table.</span>
+    <span class="fix">Click a cell inside the Excel table before running.</span>
+  </li>
+  <li>
+    <span class="msg">No ranking directives found in the row above the table.</span>
+    <span class="fix">Add at least one signed integer directly above a header cell.</span>
+  </li>
+  <li>
+    <span class="msg">Table has no data rows.</span>
+    <span class="fix">The table body is empty — add data first.</span>
+  </li>
+  <li>
+    <span class="msg">Active cell is not in a valid table header column.</span>
+    <span class="fix">Active cell is on the header row but outside the table's column range.</span>
+  </li>
+</ul>
+
+<footer>AddRankingsToTable — quick reference</footer>
+
+</body>
+</html>
